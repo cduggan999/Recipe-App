@@ -17,24 +17,9 @@
 // Host webknox-recipes.p.rapidapi.com
 // 139 09:00
 
-import axios from 'axios';
+import Search from './models/Search';
 
-//let q = `${url}apiKey=${key}`;
-
-async function getResults(query) {
-    const key = '790892ed1c07443b8710d5c4d9f168b3';
-    const url = 'https://api.spoonacular.com/recipes/search?';
-    try {
-        const res = await axios(`${url}apiKey=${key}&query=${query}`);
-        const recipes = res.data.results;
-        console.log(recipes);
-    }
-    catch (error) {
-        alert(error);
-    }
-
-}
-
-getResults('pizza');
-
+const search = new Search('pasta');
+//console.log(search);
+search.getResults();
 // 140
