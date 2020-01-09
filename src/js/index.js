@@ -39,7 +39,7 @@ const controlSearch = async () => {
 
         // 3. Prepare UI for results
         searchView.clearInput();
-        searchView.clearResults();
+        //searchView.clearResults();
 
         // 4. Search for recipes
         await state.search.getResults();
@@ -58,4 +58,4 @@ elements.searchForm.addEventListener('submit', e => {
 //const search = new Search('pasta');
 //console.log(search);
 //search.getResults();
-// 142
+// 143 06:40

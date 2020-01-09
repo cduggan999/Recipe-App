@@ -6,8 +6,30 @@ export const clearInput = () => {
     elements.searchInput.value='';
 };
 
-export const clearResults = () => {
+/* export const clearResults = () => {
     elements.searchResList.innerHTML='';
+} */
+const clearRecipes = () => {
+    elements.searchResList.innerHTML='';
+}
+
+// Trim title length to 18 characters or less
+const trimRecipeTitle = (title, limit = 20) => {
+    const trimmedTitle = [];
+    if (title.length > limit) {
+        title.split(' ').reduce((acc, curr) => {
+            if (acc + curr.length <= limit) {
+                trimmedTitle.push(curr);
+                // Incremented acc by 1 to respresent the extra space
+                acc++;
+            }
+            return acc + curr.length;
+        }, 0);
+
+        // Return the trimmed title
+        return `${trimmedTitle.join(' ')} ...`
+    }
+    return title;
 }
 
 const renderRecipe = recipe => {
@@ -21,7 +43,7 @@ const renderRecipe = recipe => {
                     <img src="https://spoonacular.com/recipeImages/${recipe.id}-${size}${type}" alt="${recipe.title}">
                 </figure>
                 <div class="results__data">
-                    <h4 class="results__name">${recipe.title} ...</h4>
+                    <h4 class="results__name">${trimRecipeTitle(recipe.title)}</h4>
                     <p class="results__ready">Ready in ${recipe.readyInMinutes} minutes.</p>
                     <p class="results__servings">Servings: ${recipe.servings}</p>
                 </div>
@@ -32,6 +54,8 @@ const renderRecipe = recipe => {
 };
 
 export const renderResults = recipes => {
+    // Clear the previous Search results
+    clearRecipes();
     // Loop through each item and print to screen
     console.log(recipes);
     recipes.forEach(renderRecipe);
