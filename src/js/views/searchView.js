@@ -11,7 +11,11 @@ export const clearInput = () => {
 } */
 const clearRecipes = () => {
     elements.searchResList.innerHTML='';
-}
+};
+
+const clearPages = () => {
+    elements.searchResPages.innerHTML='';
+};
 
 // Trim title length to 18 characters or less
 const trimRecipeTitle = (title, limit = 20) => {
@@ -30,7 +34,7 @@ const trimRecipeTitle = (title, limit = 20) => {
         return `${trimmedTitle.join(' ')} ...`
     }
     return title;
-}
+};
 
 const renderRecipe = recipe => {
     const size = '90x90';
@@ -53,10 +57,53 @@ const renderRecipe = recipe => {
     elements.searchResList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderResults = recipes => {
+const createButton = (page, type) => {
+    return `
+        <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+        <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+            <svg class="search__icon">
+                <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+            </svg>
+        </button>
+    `;
+
+};
+
+const renderPageButtons = (page, numResults, resultsPerPage) => {
+    const pages = Math.ceil(numResults / resultsPerPage);
+    let button;
+
+    if (page === 1 && page < pages) {
+        // Only display next page
+        button = createButton(page, 'next');
+    }
+    else if (page > 1 && page < pages) {
+        // Display Previous and next pages
+        button = `${createButton(page, 'prev')}
+                  ${createButton(page, 'next')}
+        `     
+    }
+    else if (page === pages && pages > 1) {
+        // Only display previous page
+        button = createButton(page, 'prev');
+    }
+
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
+};
+
+export const renderResults = (recipes, page = 1, resultsPerPage = 10) => {
     // Clear the previous Search results
     clearRecipes();
+    clearPages();
     // Loop through each item and print to screen
+    const start = (page - 1) * resultsPerPage;
+    const end = page * resultsPerPage;
+
     console.log(recipes);
-    recipes.forEach(renderRecipe);
+    recipes.slice(start, end).forEach(renderRecipe);
+
+    // Render page numbers if there is more that 1 page
+    if (recipes.length > resultsPerPage) {
+        renderPageButtons(page, recipes.length, resultsPerPage);
+    }
 };

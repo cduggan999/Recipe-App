@@ -49,15 +49,25 @@ const controlSearch = async () => {
         // console.log(state.search.result);
         removeSpinner();
         searchView.renderResults(state.search.result);
+
     }
 }
+
+//Add our Event Handlers
 
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
 });
 
-//const search = new Search('pasta');
-//console.log(search);
-//search.getResults();
-// 143 06:40
+elements.searchResPages.addEventListener('click', e => {
+    //const btn = e.target.closest(elements.searchBtnInline);
+    const btn = e.target.closest('.btn-inline');
+    if (btn) {
+        const goToPage = parseInt(btn.dataset.goto);
+        searchView.renderResults(state.search.result, goToPage);
+        console.log(goToPage);
+    }
+});
+// 146
+// Only 10 results being returned by API
