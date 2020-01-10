@@ -1,23 +1,7 @@
 // Global app controller
-//import str from './models/Search';
-
-// Importing multiple items
-// import {add, multiply, ID} from './views/searchView';
-// console.log(`Using imported functions! ${add(ID, 2)} and ${multiply(ID,2)} and str = ${str}`);
-
-// Importing multiple items
- // import {add as a, multiply as m, ID as i} from './views/searchView';
- // console.log(`Using imported functions! ${a(i, 3)} and ${m(i,4)} and str = ${str}`);
-
-//  import * as searchView from './views/searchView'; 
-//  console.log(`Using imported functions! ${searchView.add(searchView.ID, 3)} and ${searchView.multiply(searchView.ID,4)} and searchView.str = ${str}`);
-
-
-//API Key 781b4a0a52msh7d3cf852c91f399p10ba7ajsn538745683980
-// Host webknox-recipes.p.rapidapi.com
-// 139 09:00
 
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import { elements, renderSpinner, removeSpinner } from './views/base';
 
@@ -29,6 +13,9 @@ import { elements, renderSpinner, removeSpinner } from './views/base';
  */
 const state = {};
 
+/**
+ *  SEARCH CONTROLLER
+ */
 const controlSearch = async () => {
     // 1. Get query from view
    const query = searchView.getInput();
@@ -42,14 +29,19 @@ const controlSearch = async () => {
         //searchView.clearResults();
         renderSpinner(elements.searchRes);
 
-        // 4. Search for recipes
-        await state.search.getResults();
+        try {
+            // 4. Search for recipes
+            await state.search.getResults();
 
-        // 5. Render results on UI
-        // console.log(state.search.result);
-        removeSpinner();
-        searchView.renderResults(state.search.result);
-
+            // 5. Render results on UI
+            // console.log(state.search.result);
+            removeSpinner();
+            searchView.renderResults(state.search.result);
+        }
+        catch (err) {
+            alert('Search failure! Something went wrong!')
+            removeSpinner();
+        }
     }
 }
 
@@ -69,5 +61,42 @@ elements.searchResPages.addEventListener('click', e => {
         console.log(goToPage);
     }
 });
-// 146
-// Only 10 results being returned by API
+
+/**
+ *  RECIPE CONTROLLER
+ */
+const controlRecipe = async () => {
+    // Get the Hash ID from URL
+    const hashID = window.location.hash.replace('#', '');
+    console.log(hashID);
+
+    try {
+        if (hashID) {
+            // 1. Prepare UI for changes
+
+            // 2. Create new recipe object
+            state.recipe = new Recipe(hashID);
+
+            // 3. Get recipe data
+            await state.recipe.getRecipe();
+
+            // 4. Render recipe on page
+            console.log(state.recipe);
+        }
+    }
+    catch (err){
+        alert('Error getting recipe!');
+    }
+};
+
+/* // Event which fires when url hash changes
+window.addEventListener('hashchange', controlRecipe);
+
+// Event which fires when url initially loads
+window.addEventListener('load', controlRecipe); */
+
+// Event which fires when url initially loads or hash changes
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+
+// 148

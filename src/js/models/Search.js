@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { key, url } from '../config';
 
 export default class Search {
     constructor(query) {
@@ -6,10 +7,9 @@ export default class Search {
     }
 
     async getResults() {
-        const key = '790892ed1c07443b8710d5c4d9f168b3';
-        const url = 'https://api.spoonacular.com/recipes/search?';
+        const maxResults = 50;
         try {
-            const res = await axios(`${url}apiKey=${key}&query=${this.query}`);
+            const res = await axios(`${url}search?apiKey=${key}&query=${this.query}&number=${maxResults}`);
             this.result = res.data.results;
             //console.log(this.result);
         }
@@ -19,4 +19,3 @@ export default class Search {
     
     }
 }
-//
