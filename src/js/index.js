@@ -1,8 +1,9 @@
-// Global app controller
+// Global app controller 
 
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { elements, renderSpinner, removeSpinner } from './views/base';
 
 /* Gloabal state of the applicationCache 
@@ -70,33 +71,42 @@ const controlRecipe = async () => {
     const hashID = window.location.hash.replace('#', '');
     console.log(hashID);
 
-    try {
-        if (hashID) {
-            // 1. Prepare UI for changes
+    if (hashID) {
+        // 1. Prepare UI for changes
+        recipeView.clearRecipe();
+        renderSpinner(elements.recipe);
 
-            // 2. Create new recipe object
-            state.recipe = new Recipe(hashID);
+        // 2. Create new recipe object
+        state.recipe = new Recipe(hashID);
+
+        // TESTING
+        window.r = state.recipe;
+
+        try {
 
             // 3. Get recipe data
             await state.recipe.getRecipe();
 
+
             // 4. Render recipe on page
-            console.log(state.recipe);
+            //console.log(state.recipe);
+            removeSpinner();
+            recipeView.renderRecipe(state.recipe);
         }
-    }
-    catch (err){
-        alert('Error getting recipe!');
+
+
+        catch (err) {
+            alert('Error getting recipe!');
+        }
     }
 };
 
-/* // Event which fires when url hash changes
-window.addEventListener('hashchange', controlRecipe);
+ // Event which fires when url hash changes
+//window.addEventListener('hashchange', controlRecipe);
 
 // Event which fires when url initially loads
-window.addEventListener('load', controlRecipe); */
+//window.addEventListener('load', controlRecipe); 
 
 // Event which fires when url initially loads or hash changes
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
-
-// 148

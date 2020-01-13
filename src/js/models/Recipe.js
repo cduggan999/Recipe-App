@@ -18,8 +18,8 @@ export default class Recipe {
             this.servings = res.data.servings;
             this.prepTime = res.data.preparationMinutes;
             this.cookTime = res.data.cookingMinutes;
-           /*  console.log(res);
-            console.log(`${this.title} : ${this.publisher}`); */
+          // console.log(res);
+    
         }
         catch (error) {
             alert(error);
