@@ -76,6 +76,9 @@ const controlRecipe = async () => {
         recipeView.clearRecipe();
         renderSpinner(elements.recipe);
 
+        // Hightlight selected search item
+        if (state.search)searchView.highlightSelected(hashID);
+
         // 2. Create new recipe object
         state.recipe = new Recipe(hashID);
 
@@ -110,3 +113,4 @@ const controlRecipe = async () => {
 // Event which fires when url initially loads or hash changes
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
+// 150

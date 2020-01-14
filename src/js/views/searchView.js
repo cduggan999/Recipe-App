@@ -9,15 +9,22 @@ export const clearInput = () => {
 /* export const clearResults = () => {
     elements.searchResList.innerHTML='';
 } */
-const clearRecipes = () => {
+export const clearRecipes = () => {
     elements.searchResList.innerHTML='';
 };
 
-const clearPages = () => {
+export const clearPages = () => {
     elements.searchResPages.innerHTML='';
 };
 
-// Trim title length to 18 characters or less
+export const highlightSelected = id => {
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+    resultsArr.forEach(el => el.classList.remove('results__link--active'));
+    //css selector
+    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active')
+}
+
+// Trim title length to 20 characters or less
 const trimRecipeTitle = (title, limit = 20) => {
     const trimmedTitle = [];
     if (title.length > limit) {
