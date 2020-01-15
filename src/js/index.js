@@ -5,6 +5,7 @@ import Recipe from './models/Recipe';
 import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import { elements, renderSpinner, removeSpinner } from './views/base';
 
 /* Gloabal state of the applicationCache 
@@ -14,7 +15,7 @@ import { elements, renderSpinner, removeSpinner } from './views/base';
  * - Liked recipes
  */
 const state = {};
-
+window.state = state; //TESTING
 /**
  *  SEARCH CONTROLLER
  */
@@ -105,15 +106,6 @@ const controlRecipe = async () => {
     }
 };
 
- // Event which fires when url hash changes
-//window.addEventListener('hashchange', controlRecipe);
-
-// Event which fires when url initially loads
-//window.addEventListener('load', controlRecipe); 
-
-// Event which fires when url initially loads or hash changes
-['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
-
 // Recipe Button Event Listner (use event delegation as button not visible at load time)
 elements.recipe.addEventListener('click', event => {
     // If target = decrease or any child of decrease
@@ -125,4 +117,46 @@ elements.recipe.addEventListener('click', event => {
         state.recipe.updateServings('inc');
         recipeView.updateServings(state.recipe);
     }
+    else if (event.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
+    }
 });
+
+// Event which fires when url initially loads or hash changes
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+/**
+ *  LIST CONTROLLER
+ */
+const controlList = () => {
+    // 1. Create a new list if there is none
+    if(!state.list) state.list = new List();
+
+    // 2. Add each ingredient to shopping list
+    state.recipe.ingredients.forEach(el => {
+        const item = state.list.addItem(el.amount, el.unit, el.name);
+        listView.renderItem(item);
+    });
+}
+
+// Shopping List delete and update events
+elements.shoppingList.addEventListener('click', event => {
+    const id = event.target.closest('.shopping__item').dataset.itemid;
+
+    // Delete button pressed
+    if (event.target.matches('.shopping__delete, .shopping__delete *')) {
+        // Delete from state
+        state.list.deleteItem(id)
+
+        // Delete from list
+        listView.deleteItem(id);
+    }
+    // Amount Updates
+    /* else if (event.target.matches('.shopping__count-value')) {
+        const updatedAmount = parseFloat(event.target.value);
+        state.list.updateAmount(id, updatedAmount);
+    } */
+    console.log(id);
+});
+
+
