@@ -3,6 +3,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
+import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
@@ -106,21 +107,6 @@ const controlRecipe = async () => {
     }
 };
 
-// Recipe Button Event Listner (use event delegation as button not visible at load time)
-elements.recipe.addEventListener('click', event => {
-    // If target = decrease or any child of decrease
-    if (event.target.matches('.btn-decrease, .btn-decrease *') && state.recipe.servings > 1){
-        state.recipe.updateServings('dec');
-        recipeView.updateServings(state.recipe);
-    }
-    else if (event.target.matches('.btn-increase, .btn-increase *')){
-        state.recipe.updateServings('inc');
-        recipeView.updateServings(state.recipe);
-    }
-    else if (event.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-        controlList();
-    }
-});
 
 // Event which fires when url initially loads or hash changes
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
@@ -137,7 +123,7 @@ const controlList = () => {
         const item = state.list.addItem(el.amount, el.unit, el.name);
         listView.renderItem(item);
     });
-}
+};
 
 // Shopping List delete and update events
 elements.shoppingList.addEventListener('click', event => {
@@ -152,11 +138,67 @@ elements.shoppingList.addEventListener('click', event => {
         listView.deleteItem(id);
     }
     // Amount Updates
-    /* else if (event.target.matches('.shopping__count-value')) {
+    else if (event.target.matches('.shopping__count-value')) {
         const updatedAmount = parseFloat(event.target.value);
         state.list.updateAmount(id, updatedAmount);
-    } */
-    console.log(id);
+    }
 });
 
+/**
+ *  LIKES CONTROLLER
+ */
+const controlLikes = () => {
+    // 1. Create a new likes list if there is none
+    if(!state.likes) state.likes = new Likes();
+    const currentID = state.recipe.id;
 
+    // User Not yet liked (more common scenario)
+    if(!state.likes.isLiked(currentID)) {
+        // Add like to the state
+        const newLike = state.likes.addLike(
+            currentID,
+            state.recipe.title,
+            state.recipe.publisher,
+            state.recipe.image
+        );
+            
+        // Toggle Like button
+
+        // Add like to UI List
+        console.log(state.likes);
+    } 
+    // Liked
+    else {
+        // Remove like to the state
+        state.likes.deleteLike(currentID);
+
+        // Toggle Like button
+
+        // Remove like to UI List
+        console.log(state.likes);
+    }
+};
+
+// Recipe Button Event Listner (use event delegation as button not visible at load time)
+elements.recipe.addEventListener('click', event => {
+    // If target = decrease or any child of decrease
+    if (event.target.matches('.btn-decrease, .btn-decrease *') && state.recipe.servings > 1){
+        state.recipe.updateServings('dec');
+        recipeView.updateServings(state.recipe);
+    }
+    else if (event.target.matches('.btn-increase, .btn-increase *')){
+        state.recipe.updateServings('inc');
+        recipeView.updateServings(state.recipe);
+    }
+    else if (event.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        // Add to Shopping list
+        controlList();
+    }
+    // Likes button pressed
+    else if (event.target.matches('.recipe__love, .recipe__love *')) {
+        // Add Likes
+        controlLikes();
+    }
+});
+
+// 156 03:45

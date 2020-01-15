@@ -1,5 +1,3 @@
-/* import axios from 'axios';
-import { key, url } from '../config'; */
 import uniqid from 'uniqid';
 
 export default class List {
@@ -7,7 +5,7 @@ export default class List {
         this.items = [];
     }
 
-    addItem (amount, unit, ingredient) {
+    addItem(amount, unit, ingredient) {
         const item = {
             id: uniqid(),
             amount,
@@ -18,7 +16,7 @@ export default class List {
         return item;
     }
 
-    deleteItem (id) {
+    deleteItem(id) {
         const index = this.items.findIndex(el => el.id === id);
         // Takes start index and number to cut from array
         this.items.splice(index, 1);
