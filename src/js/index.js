@@ -113,4 +113,16 @@ const controlRecipe = async () => {
 // Event which fires when url initially loads or hash changes
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
-// 150
+// Recipe Button Event Listner (use event delegation as button not visible at load time)
+elements.recipe.addEventListener('click', event => {
+    // If target = decrease or any child of decrease
+    if (event.target.matches('.btn-decrease, .btn-decrease *') && state.recipe.servings > 1){
+        state.recipe.updateServings('dec');
+        recipeView.updateServings(state.recipe);
+    }
+    else if (event.target.matches('.btn-increase, .btn-increase *')){
+        state.recipe.updateServings('inc');
+        recipeView.updateServings(state.recipe);
+    }
+});
+

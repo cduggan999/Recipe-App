@@ -18,12 +18,22 @@ export default class Recipe {
             this.servings = res.data.servings;
             this.prepTime = res.data.preparationMinutes;
             this.cookTime = res.data.cookingMinutes;
-          // console.log(res);
-    
         }
         catch (error) {
             alert(error);
-        }
-    
+        }   
+    }
+
+    updateServings(type) {
+        // Servings
+        const newServings = type === 'dec' ? this.servings-1 : this.servings+1;
+
+        // Ingredients
+        this.ingredients.forEach(ing => {
+            
+            ing.amount *= (newServings/this.servings)
+        });
+
+        this.servings = newServings;
     }
 }
