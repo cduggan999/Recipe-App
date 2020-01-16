@@ -7,6 +7,7 @@ import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 import { elements, renderSpinner, removeSpinner } from './views/base';
 
 /* Gloabal state of the applicationCache 
@@ -97,7 +98,7 @@ const controlRecipe = async () => {
             // 4. Render recipe on page
             //console.log(state.recipe);
             removeSpinner();
-            recipeView.renderRecipe(state.recipe);
+            recipeView.renderRecipe(state.recipe, state.likes.isLiked(hashID));
         }
 
 
@@ -147,6 +148,10 @@ elements.shoppingList.addEventListener('click', event => {
 /**
  *  LIKES CONTROLLER
  */
+// TESTING
+state.likes = new Likes();
+likesView.toogleLikeMenu(state.likes.getNumberLikes());
+
 const controlLikes = () => {
     // 1. Create a new likes list if there is none
     if(!state.likes) state.likes = new Likes();
@@ -163,9 +168,11 @@ const controlLikes = () => {
         );
             
         // Toggle Like button
+        likesView.toggleLikeButton(true);
 
         // Add like to UI List
         console.log(state.likes);
+        likesView.renderLikes(newLike);
     } 
     // Liked
     else {
@@ -173,10 +180,14 @@ const controlLikes = () => {
         state.likes.deleteLike(currentID);
 
         // Toggle Like button
+        likesView.toggleLikeButton(false);
 
         // Remove like to UI List
+        likesView.renderLikes(state.likes);
+        likesView.deleteLike(currentID);
         console.log(state.likes);
     }
+    likesView.toogleLikeMenu(state.likes.getNumberLikes());
 };
 
 // Recipe Button Event Listner (use event delegation as button not visible at load time)
@@ -200,5 +211,3 @@ elements.recipe.addEventListener('click', event => {
         controlLikes();
     }
 });
-
-// 156 03:45

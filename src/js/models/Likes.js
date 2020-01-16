@@ -27,6 +27,8 @@ export default class Likes {
     }
 
     getNumberLikes() {
+        console.log('called getNumLikes');
+        console.log(this.likes.length);
         return this.likes.length;
     }
 

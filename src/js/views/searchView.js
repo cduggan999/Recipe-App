@@ -25,7 +25,7 @@ export const highlightSelected = id => {
 }
 
 // Trim title length to 20 characters or less
-const trimRecipeTitle = (title, limit = 20) => {
+export const trimRecipeTitle = (title, limit = 20) => {
     const trimmedTitle = [];
     if (title.length > limit) {
         title.split(' ').reduce((acc, curr) => {
@@ -49,7 +49,7 @@ const renderRecipe = recipe => {
     console.log(recipe);
     const markup = `
         <li>
-            <a class="results__link results__link" href="#${recipe.id}">
+            <a class="results__link " href="#${recipe.id}">
                 <figure class="results__fig">
                     <img src="https://spoonacular.com/recipeImages/${recipe.id}-${size}${type}" alt="${recipe.title}">
                 </figure>

@@ -7,7 +7,9 @@ export const elements = {
     searchBtnInline: document.querySelector('.btn-inline'),
     recipe: document.querySelector('.recipe'),
     recipeServings: document.querySelector('.recipe__info-data--people'),
-    shoppingList: document.querySelector('.shopping__list')
+    shoppingList: document.querySelector('.shopping__list'),
+    likesField: document.querySelector('.likes__field'),
+    likesList: document.querySelector('.likes__list')
 };
 
 export const elementStrings = {
