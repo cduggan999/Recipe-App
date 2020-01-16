@@ -13,6 +13,10 @@ export default class Likes {
             image
         }
         this.likes.push(like);
+
+        // Add to localStorage so data is persistent
+        this.persistData();
+
         return like;
     }
 
@@ -20,6 +24,9 @@ export default class Likes {
         const index = this.likes.findIndex(el => el.id === id);
         // Takes start index and number to cut from array
         this.likes.splice(index, 1);
+
+        // Add to localStorage so data is persistent
+        this.persistData();
     }
 
     isLiked(id) {
@@ -32,8 +39,14 @@ export default class Likes {
         return this.likes.length;
     }
 
-    /*updateAmount(id, newAmount) {
-        // Finds item with matching id and updates amount
-        this.items.find(el => el.id === id).amount = newAmount;
-    } */
+    persistData() {
+        localStorage.setItem('likes', JSON.stringify(this.likes));
+    } 
+
+    readStorage() {
+        const storage = JSON.parse(localStorage.getItem('likes'));
+
+        // Backup likes from local storage
+        if (storage) this.likes = storage;
+    }
 }

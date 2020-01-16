@@ -148,9 +148,6 @@ elements.shoppingList.addEventListener('click', event => {
 /**
  *  LIKES CONTROLLER
  */
-// TESTING
-state.likes = new Likes();
-likesView.toogleLikeMenu(state.likes.getNumberLikes());
 
 const controlLikes = () => {
     // 1. Create a new likes list if there is none
@@ -190,6 +187,20 @@ const controlLikes = () => {
     likesView.toogleLikeMenu(state.likes.getNumberLikes());
 };
 
+//Restore stored likes on page loads
+window.addEventListener('load', () => {
+    state.likes = new Likes();
+
+    // Gets stored likes
+    state.likes.readStorage();
+
+    // Toggle likes button
+    likesView.toogleLikeMenu(state.likes.getNumberLikes());
+
+    // Render Likes
+    state.likes.likes.forEach(like => likesView.renderLikes(like));
+});
+
 // Recipe Button Event Listner (use event delegation as button not visible at load time)
 elements.recipe.addEventListener('click', event => {
     // If target = decrease or any child of decrease
@@ -211,3 +222,5 @@ elements.recipe.addEventListener('click', event => {
         controlLikes();
     }
 });
+
+// 158
