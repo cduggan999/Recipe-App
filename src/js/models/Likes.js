@@ -1,5 +1,3 @@
-import uniqid from 'uniqid';
-
 export default class Likes {
     constructor() {
         this.likes = [];
@@ -34,8 +32,6 @@ export default class Likes {
     }
 
     getNumberLikes() {
-        console.log('called getNumLikes');
-        console.log(this.likes.length);
         return this.likes.length;
     }
 

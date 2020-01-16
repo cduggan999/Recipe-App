@@ -17,7 +17,7 @@ import { elements, renderSpinner, removeSpinner } from './views/base';
  * - Liked recipes
  */
 const state = {};
-window.state = state; //TESTING
+
 /**
  *  SEARCH CONTROLLER
  */
@@ -63,7 +63,6 @@ elements.searchResPages.addEventListener('click', e => {
     if (btn) {
         const goToPage = parseInt(btn.dataset.goto);
         searchView.renderResults(state.search.result, goToPage);
-        console.log(goToPage);
     }
 });
 
@@ -168,7 +167,6 @@ const controlLikes = () => {
         likesView.toggleLikeButton(true);
 
         // Add like to UI List
-        console.log(state.likes);
         likesView.renderLikes(newLike);
     } 
     // Liked
@@ -182,7 +180,6 @@ const controlLikes = () => {
         // Remove like to UI List
         likesView.renderLikes(state.likes);
         likesView.deleteLike(currentID);
-        console.log(state.likes);
     }
     likesView.toogleLikeMenu(state.likes.getNumberLikes());
 };
@@ -222,5 +219,3 @@ elements.recipe.addEventListener('click', event => {
         controlLikes();
     }
 });
-
-// 158

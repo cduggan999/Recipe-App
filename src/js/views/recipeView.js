@@ -121,6 +121,6 @@ export const updateServings = recipe => {
     const countElements = Array.from(document.querySelectorAll('.recipe__count'));
    // console.log(countElements);
     countElements.forEach((el, i) => {
-            el.textContent = Math.round(recipe.ingredients[i].amount*100)/100;
+        el.textContent = Math.round(recipe.ingredients[i].amount*100)/100;
     })
 }
