@@ -6,8 +6,8 @@
 
 <br><br><br>
 
-<h4>Installation<h4>
+<h4>Installation</h4>
   
-git clone https://github.com/cduggan999/Recipe-App.git
+<p>git clone https://github.com/cduggan999/Recipe-App.git
 
-npm install
+npm install</p>
